@@ -61,7 +61,7 @@ const UserDashboard = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/user/profile",
+        "https://server-hkuv.onrender.com/api/user/profile",
         {
           headers: {
             Authorization: token,
