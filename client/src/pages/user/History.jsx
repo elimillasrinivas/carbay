@@ -42,7 +42,7 @@ const History = ({userData}) => {
 
   const fetchAllHistory = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/user/history/${userData._id}`);
+      const response = await axios.get(`https://server-hkuv.onrender.com/api/user/history/${userData._id}`);
       setUserHistory(response.data);
       console.log(userHistory);
     } catch (error) {
