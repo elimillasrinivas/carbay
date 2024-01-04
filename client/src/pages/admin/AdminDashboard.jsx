@@ -59,7 +59,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3000/api/admin/profile",
+        "https://server-hkuv.onrender.com/api/admin/profile",
         {
           headers: {
             Authorization: token,
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3000/api/admin/all/histories",
+        "https://server-hkuv.onrender.com/api/admin/all/histories",
         {
           headers: {
             Authorization: token,
