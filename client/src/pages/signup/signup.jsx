@@ -39,7 +39,7 @@ const Signup = () => {
         if (isEmailValid && ismobileNumberValid && isPasswordValid) {
 
             try {
-                await axios.post("https://server-carzbay.onrender.com/api/auth/signup",{
+                await axios.post("https://server-hkuv.onrender.com/api/auth/signup",{
                 email, mobileNumber, userName, password
                 })
             } catch (error) {
