@@ -88,7 +88,7 @@ const Histories = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://server-carzbay.onrender.com/api/admin/all/histories",
+        "https://server-hkuv.onrender.com/api/admin/all/histories",
         {
           headers: {
             Authorization: token,
@@ -117,7 +117,7 @@ const Histories = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:3000/api/admin/history/${history._id}`,
+        `https://server-hkuv.onrender.com/api/admin/history/${history._id}`,
         { status, user: history.user },
         {
           headers: {
