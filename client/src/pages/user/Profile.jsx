@@ -77,7 +77,7 @@ const Profile = ({ userData }) => {
   const handleUpdateProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put('http://localhost:3000/api/user/update',{
+      const response = await axios.put('https://server-hkuv.onrender.com/api/user/update',{
         userName:updatedName, email:updatedEmail, mobileNumber:updatedMobile
       },{
         headers:{
