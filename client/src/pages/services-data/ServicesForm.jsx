@@ -279,7 +279,7 @@ const ServicesForm = () => {
     console.log(formData);
     try {
       // Make a POST request to your backend API
-      const response = await axios.post("https://server-carzbay.onrender.com/api/services/create", formData);
+      const response = await axios.post("https://server-hkuv.onrender.com/api/services/create", formData);
       console.log(response.data); 
       alert("Success")
     } catch (error) {
