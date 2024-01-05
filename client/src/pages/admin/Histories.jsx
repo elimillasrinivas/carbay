@@ -107,6 +107,11 @@ const Histories = () => {
   }, []);
 
   const enterEditMode = (history) => {
+    // Smoothly scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     setEditing(true);
     setStatus(history.status);
     setHistory(history);
