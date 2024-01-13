@@ -231,7 +231,7 @@ const ServicesForm = () => {
       console.log(response.data);
       alert("Success");
     } catch (error) {
-      alert("Error submitting form");
+      alert("This Car Model is already submitted.");
       console.error("Error submitting form:", error);
     }
   };
