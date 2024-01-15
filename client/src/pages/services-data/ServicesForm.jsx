@@ -17,9 +17,11 @@ import {
 } from "@mui/material";
 
 const ServicesForm = () => {
+  const [selectedFileName, setSelectedFileName] = useState('');
   const [formData, setFormData] = useState({
     carCompany: "",
     carModel: "",
+    img: "",
     petrol: {
       general: {
         comprehensive: "",
@@ -132,6 +134,7 @@ const ServicesForm = () => {
     setFormData({
       carCompany: "",
       carModel: "",
+      img:"",
       petrol: {
         general: {
           comprehensive: "",
@@ -219,9 +222,24 @@ const ServicesForm = () => {
     });
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          img: reader.result, 
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       // Make a POST request to your backend API
       const response = await axios.post(
@@ -267,7 +285,6 @@ const ServicesForm = () => {
     "VOLVO",
   ];
 
-  console.log(Object.keys(modelsData));
   return (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={3} sx={{ padding: "20px" }}>
@@ -293,26 +310,46 @@ const ServicesForm = () => {
         </Grid>
 
         {formData.carCompany && (
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="carModel">Car Model</InputLabel>
-              <Select
-                name="carModel"
-                value={formData.carModel}
-                onChange={handleInputChange}
-                label="Car Model"
-              >
-                <MenuItem value="" disabled>
-                  Select Car Model
-                </MenuItem>
-                {modelsData[formData.carCompany].map((model) => (
-                  <MenuItem key={model} value={model}>
-                    {model}
+          <>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="carModel">Car Model</InputLabel>
+                <Select
+                  name="carModel"
+                  value={formData.carModel}
+                  onChange={handleInputChange}
+                  label="Car Model"
+                >
+                  <MenuItem value="" disabled>
+                    Select Car Model
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+                  {modelsData[formData.carCompany].map((model) => (
+                    <MenuItem key={model} value={model}>
+                      {model}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <input
+                  accept="image"
+                  style={{ display: "none" }}
+                  id="carImage"
+                  type="file"
+                  onChange={handleImageChange}
+                />
+                <label htmlFor="carImage">
+                  <Button variant="contained" component="span">
+                    Upload Car Model Image
+                  </Button> <br/>
+                  {selectedFileName && <Typography variant="h5">Choosen File : {selectedFileName}</Typography>}
+                </label>
+              </FormControl>
+            </Grid>
+          </>
         )}
       </Grid>
       <div
@@ -333,7 +370,6 @@ const ServicesForm = () => {
             <Typography variant="h4">General</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Comprehensive"
               name="petrol.general.comprehensive"
               value={formData.petrol.general.comprehensive}
@@ -341,7 +377,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Standard"
               name="petrol.general.standard"
               value={formData.petrol.general.standard}
@@ -354,7 +389,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Painting</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Alloy"
               name="petrol.painting.alloy"
               value={formData.petrol.painting.alloy}
@@ -362,7 +396,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="FullBody"
               name="petrol.painting.fullBody"
               value={formData.petrol.painting.fullBody}
@@ -370,7 +403,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Prepanel"
               name="petrol.painting.prepanel"
               value={formData.petrol.painting.prepanel}
@@ -383,7 +415,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Battery</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Battery Replacement"
               name="petrol.battery.batteryReplacement"
               value={formData.petrol.battery.batteryReplacement}
@@ -391,7 +422,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="JumpStart"
               name="petrol.battery.jumpStart"
               value={formData.petrol.battery.jumpStart}
@@ -404,7 +434,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Checkup</Typography>
             <TextField
               fullWidth
-              type="number"
               label="General Health"
               name="petrol.checkup.generalHealth"
               value={formData.petrol.checkup.generalHealth}
@@ -412,7 +441,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Other Services"
               name="petrol.checkup.otherServices"
               value={formData.petrol.checkup.otherServices}
@@ -425,7 +453,6 @@ const ServicesForm = () => {
             <Typography variant="h4">AC</Typography>
             <TextField
               fullWidth
-              type="number"
               label="AC Services"
               name="petrol.ac.acService"
               value={formData.petrol.ac.acService}
@@ -433,7 +460,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Electrical Repair"
               name="petrol.ac.electricalRepair"
               value={formData.petrol.ac.electricalRepair}
@@ -446,7 +472,6 @@ const ServicesForm = () => {
             <Typography variant="h4">PPF And Ceramic</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Paint Protection"
               name="petrol.ppf.paint"
               value={formData.petrol.ppf.paint}
@@ -454,7 +479,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Ceramic Coating"
               name="petrol.ppf.ceramic"
               value={formData.petrol.ppf.ceramic}
@@ -471,7 +495,6 @@ const ServicesForm = () => {
             <Typography variant="h4">General</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Comprehensive"
               name="diesel.general.comprehensive"
               value={formData.diesel.general.comprehensive}
@@ -479,7 +502,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Standard"
               name="diesel.general.standard"
               value={formData.diesel.general.standard}
@@ -492,7 +514,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Painting</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Alloy"
               name="diesel.painting.alloy"
               value={formData.diesel.painting.alloy}
@@ -500,7 +521,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="FullBody"
               name="diesel.painting.fullBody"
               value={formData.diesel.painting.fullBody}
@@ -508,7 +528,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Prepanel"
               name="diesel.painting.prepanel"
               value={formData.diesel.painting.prepanel}
@@ -521,7 +540,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Battery</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Battery Replacement"
               name="diesel.battery.batteryReplacement"
               value={formData.diesel.battery.batteryReplacement}
@@ -529,7 +547,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="JumpStart"
               name="diesel.battery.jumpStart"
               value={formData.diesel.battery.jumpStart}
@@ -542,7 +559,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Checkup</Typography>
             <TextField
               fullWidth
-              type="number"
               label="General Health"
               name="diesel.checkup.generalHealth"
               value={formData.diesel.checkup.generalHealth}
@@ -550,7 +566,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Other Services"
               name="diesel.checkup.otherServices"
               value={formData.diesel.checkup.otherServices}
@@ -563,7 +578,6 @@ const ServicesForm = () => {
             <Typography variant="h4">AC</Typography>
             <TextField
               fullWidth
-              type="number"
               label="AC Services"
               name="diesel.ac.acService"
               value={formData.diesel.ac.acService}
@@ -571,7 +585,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Electrical Repair"
               name="diesel.ac.electricalRepair"
               value={formData.diesel.ac.electricalRepair}
@@ -584,7 +597,6 @@ const ServicesForm = () => {
             <Typography variant="h4">PPF And Ceramic</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Paint Protection"
               name="diesel.ppf.paint"
               value={formData.diesel.ppf.paint}
@@ -592,7 +604,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Ceramic Coating"
               name="diesel.ppf.ceramic"
               value={formData.diesel.ppf.ceramic}
@@ -609,7 +620,6 @@ const ServicesForm = () => {
             <Typography variant="h4">General</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Comprehensive"
               name="ev.general.comprehensive"
               value={formData.ev.general.comprehensive}
@@ -617,7 +627,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Standard"
               name="ev.general.standard"
               value={formData.ev.general.standard}
@@ -630,7 +639,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Painting</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Alloy"
               name="ev.painting.alloy"
               value={formData.ev.painting.alloy}
@@ -638,7 +646,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="FullBody"
               name="ev.painting.fullBody"
               value={formData.ev.painting.fullBody}
@@ -646,7 +653,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Prepanel"
               name="ev.painting.prepanel"
               value={formData.ev.painting.prepanel}
@@ -659,7 +665,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Battery</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Battery Replacement"
               name="ev.battery.batteryReplacement"
               value={formData.ev.battery.batteryReplacement}
@@ -667,7 +672,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="JumpStart"
               name="ev.battery.jumpStart"
               value={formData.ev.battery.jumpStart}
@@ -680,7 +684,6 @@ const ServicesForm = () => {
             <Typography variant="h4">Checkup</Typography>
             <TextField
               fullWidth
-              type="number"
               label="General Health"
               name="ev.checkup.generalHealth"
               value={formData.ev.checkup.generalHealth}
@@ -688,7 +691,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Other Services"
               name="ev.checkup.otherServices"
               value={formData.ev.checkup.otherServices}
@@ -701,7 +703,6 @@ const ServicesForm = () => {
             <Typography variant="h4">AC</Typography>
             <TextField
               fullWidth
-              type="number"
               label="AC Services"
               name="ev.ac.acService"
               value={formData.ev.ac.acService}
@@ -709,7 +710,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Electrical Repair"
               name="ev.ac.electricalRepair"
               value={formData.ev.ac.electricalRepair}
@@ -722,7 +722,6 @@ const ServicesForm = () => {
             <Typography variant="h4">PPF And Ceramic</Typography>
             <TextField
               fullWidth
-              type="number"
               label="Paint Protection"
               name="ev.ppf.paint"
               value={formData.ev.ppf.paint}
@@ -730,7 +729,6 @@ const ServicesForm = () => {
             />
             <TextField
               fullWidth
-              type="number"
               label="Ceramic Coating"
               name="ev.ppf.ceramic"
               value={formData.ev.ppf.ceramic}
